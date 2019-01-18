@@ -1,2 +1,1 @@
-This folder contains three header files 'vector.h', 'matrix.h' and 'matrix3d.h' with dynamic memory allocation. A useful pdf I found online is also included.
-
+In C++, arrays do not check for bounds. Which causes many bugs including segmentation faults and false memory allocations. These updated codes are equipped to abort whenever an array is accessed out of bounds. The detailed description is provided in the codes. 
