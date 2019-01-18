@@ -1,4 +1,4 @@
-#ifndef MATRIX3D_H //Include guard
+#ifndef MATRIX3D_H //Include guard: In the C and C++ programming languages, an #include guard, sometimes called a macro guard or header guard, is a particular construct used to avoid the problem of double inclusion when dealing with the include directive.- Wikipedia
 #define MATRIX3D_H
 #include<iostream>
 #include<stdlib.h>
@@ -6,8 +6,12 @@
 
 using namespace std;
 
-//matrix3d class
-/******************************************************************************************************************/
+//matrix3d class : 3D array
+
+// for calling use matrix3d<double, no. of grids in x , no. of grids in y, no. of grids in z> U
+// where U can be any scalar or vector field
+
+
 /******************************************************************************************************************/
 template <typename T, int row, int column, int depth>   //row by column by depth
 class matrix3d
@@ -16,8 +20,25 @@ class matrix3d
   
 
 	
-	T operator()(const int i, const int j, const int k) const {return mat3[k*row*column + i*column + j];} //{return mat3[i*column*depth+j*depth+k];}//
-	T& operator()(const int i,const int j, const int k) {return mat3[k*row*column + i*column + j];} //	{return mat3[i*column*depth+j*depth+k];}//
+	T operator()(const int i, const int j, const int k) const 
+	{
+		if(i>=0 && i<row && j>=0 && j<column && k>=0 && k<depth)
+			{return mat3[k*row*column + i*column + j];}
+
+		else
+			{cout<<'\t'<<"Index out of bounds"<<endl;}
+
+	}
+	
+	T& operator()(const int i,const int j, const int k) 
+	{
+		if(i>=0 && i<row && j>=0 && j<column && k>=0 && k<depth)
+			{return mat3[k*row*column + i*column + j];}
+
+		else
+			{cout<<'\t'<<"Index out of bounds"<<endl;}
+
+	} 
 
 	void clear(); //clear function
 	void copyOther(const matrix3d &other);//copy function	
@@ -28,7 +49,6 @@ class matrix3d
 	matrix3d(const matrix3d &other) // Copy constructor
 	{
 	copyOther(other);
-//      	cout<<"matrix3d copy constructor invoked "<<endl;				
 	}
 	
 	matrix3d & operator =(const matrix3d & other) // Assn. operator
@@ -36,7 +56,6 @@ class matrix3d
 		{
 			clear();
 			copyOther(other);
-//      			cout<<"matrix3d assignment operator invoked "<<endl;											
 		}
 	return *this;
 	}
@@ -68,7 +87,6 @@ template <typename T, int row, int column, int depth>
 template <typename T, int row, int column, int depth>
 	matrix3d<T,row,column,depth>::matrix3d() //CONSTRUCTOR
 	{
-//        cout << "matrix3d Constructor invoked: " << endl;
 		mat3 = new T [row*column*depth]; 
 		for(int i=0;i<row*column*depth;i++)
 		{mat3[i]= 0;}
@@ -80,9 +98,6 @@ template <typename T, int row, int column, int depth>
 //		clean up allocated memory
 		if(mat3!=NULL)
 		{clear();
-//		delete [] mat3;
-//		mat3 = NULL;
-//		cout << "matrix3d Destructor invoked: " << endl;
 		}
 	}
 
@@ -93,13 +108,11 @@ template <typename T, int row, int column, int depth>
 		int i,j,k;
 		for(k=0;k<depth;k++)
 		{
-//			cout<<"k="<<k<<endl;
-				std::cout<<'\n';
+			std::cout<<'\n';
 			for(i=0;i<row;i++)
 			{	
 				for(j=0;j<column;j++)
 				{
-				//std::cout<<'\t';
 				os<<mymatrix3d(i,j,k);
 				std::cout<<'\t';
 				}
@@ -161,6 +174,26 @@ template <typename T, int row, int column, int depth>
 				for(j=0;j<column;j++)
 				{
 				answer(i,j,k)=a(i,j,k)-b(i,j,k);
+				}	
+		
+			}
+		}	
+	return answer;
+	}
+
+//overload * operator, multiplication by a scalar
+	template <typename T, int row, int column, int depth>  
+	matrix3d<T,row,column,depth> operator*  ( T a, matrix3d<T,row,column,depth> &b)//overloading * operator 
+	{
+	int i,j,k;
+	matrix3d<T,row,column,depth> answer;
+		for(k=0;k<depth;k++)	
+		{	
+			for(i=0;i<row;i++)
+			{	
+				for(j=0;j<column;j++)
+				{
+				answer(i,j,k)= a * b(i,j,k);
 				}	
 		
 			}

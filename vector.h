@@ -1,4 +1,4 @@
-#ifndef VECT_H //Include guard
+#ifndef VECT_H //Include guard: In the C and C++ programming languages, an #include guard, sometimes called a macro guard or header guard, is a particular construct used to avoid the problem of double inclusion when dealing with the include directive.- Wikipedia
 #define VECT_H
 
 using namespace std;
@@ -10,8 +10,22 @@ struct vect
 	public:
 
 
-double operator()( int i) const {return data[i];}
-double & operator()( int i) {return data[i];}	
+double operator()(int i) const 
+{
+	if(i>=0 && i<N)
+	{return data[i];}
+
+	else
+	{cout<<'\t'<<"Index out of bounds"<<endl;}
+}
+double & operator()(int i) 
+{
+	if(i>=0 && i<N)
+	{return data[i];}
+
+	else
+	{cout<<'\t'<<"Index out of bounds"<<endl;}
+}	
 
 	void clear();//clear function	
 	void copyOther(const vect &other);//copy function
@@ -23,17 +37,15 @@ double & operator()( int i) {return data[i];}
 	vect(const vect &other) // Copy constructor
 	{
 		copyOther(other);
-//      		cout<<"vector copy constructor invoked "<<endl;		
 		
 	}
 	
 	
-	vect & operator =(const vect &other) // Assn. operator
+	vect & operator =(const vect &other) // Assignment operator
 	{	if(this != &other)
 		{
 			clear();
 			copyOther(other);
-//      			cout<<"vector assignment operator invoked "<<endl;					
 		}
 	return (*this);
 	}
@@ -91,9 +103,7 @@ void vect<T,N>::copyOther(const vect &other)//copy function
 template<typename T, int N> 
 vect<T,N>::vect()  //CONSTRUCTOR
 {
-//    cout << "vector Constructor invoked: " << endl;
 	data = new T [N]; 
-//	data=(T* )malloc (sizeof(T) * N);
 	for(int i=0;i<N;i++)
 	{
 		data[i]=0.0;
@@ -105,36 +115,9 @@ vect<T,N>::~vect() //DESTRUCTOR
 {
 //	clean up allocated memory
 	clear();
-//delete [] data;
-//data = NULL;
-//cout << "Vector Destructor invoked: " << endl;
-}
-
-/*
-template<typename T, int N>
-ostream& operator<<  (ostream& os, vect<T,N> &myVect) //cout
-{	
-	for(int i=0; i<N; i++)
-	{
-	os<<myVect.data[i];
-	cout<<'\t';
-	}
-	cout<<'\n';	
-	return os;
-		 
 }
 
 
-template<typename T, int N>
-istream& operator>>  (istream& is, vect<T,N> &myVect) //cin
-{	
-	for(int i=0; i<N; i++)
-	{
-	is>>myVect.data[i];
-	}	
-	return is;
-		 
-}
 /******************************************************************************/
 template<int m>
 struct metaDot 
@@ -173,7 +156,6 @@ struct metaDot<0>
 		int i;
 		for(i=0;i<N;i++)
 		{
-//			answer[i]=a[i]+b[i];
 			answer(i)=a(i)+b(i);
 		}
 	return answer;
@@ -186,7 +168,6 @@ struct metaDot<0>
 		int i;
 		for(i=0;i<N;i++)
 		{
-//			answer[i]=a[i]-b[i];
 			answer(i)=a(i)-b(i);
 		}
 	return answer;

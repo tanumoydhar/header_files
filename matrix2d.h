@@ -1,4 +1,4 @@
-#ifndef MATRIX2D_H //Include guard
+#ifndef MATRIX2D_H //Include guard: In the C and C++ programming languages, an #include guard, sometimes called a macro guard or header guard, is a particular construct used to avoid the problem of double inclusion when dealing with the include directive.- Wikipedia
 #define MATRIX2D_H
 #include<iostream>
 #include<stdlib.h>
@@ -6,8 +6,11 @@
 
 using namespace std;
 
-//matrix2d class
-/******************************************************************************************************************/
+// matrix2d class : 2D array 
+
+// for calling use matrix2d<double,no. of grids in x , no. of grids in y> U
+// where U can be any scalar or vector field. 
+
 /******************************************************************************************************************/
 template <typename T, int row, int column>   //row by column
 class matrix2d
@@ -16,8 +19,27 @@ class matrix2d
   
 
 	
-	T operator()(const int i, const int j) const {return mat2[i*column + j];}//{return mat2[i*column+j];}
-	T& operator()(const int i,const int j) {return mat2[i*column + j];}//{return mat2[i*column+j];}	
+	T operator()(const int i, const int j) const 
+	{
+		if(i>=0 && i<row && j>=0 && j<column)
+			{return mat2[i*column + j];}
+
+		else
+			{cout<<'\t'<<"Index out of bounds"<<endl;}
+
+	}
+	
+
+
+	T& operator()(const int i,const int j) 
+	{
+		if(i>=0 && i<row && j>=0 && j<column)
+			{return mat2[i*column + j];}
+
+		else
+			{cout<<'\t'<<"Index out of bounds"<<endl;}
+
+	}	
 
 	void clear(); //clear function
 	void copyOther(const matrix2d &other);//copy function	
@@ -28,7 +50,6 @@ class matrix2d
 	matrix2d(const matrix2d &other) // Copy constructor
 	{
 	copyOther(other);
-//      	cout<<"matrix2d copy constructor invoked "<<endl;			
 	}
 	
 	matrix2d & operator =(const matrix2d & other) // Assn. operator
@@ -36,7 +57,6 @@ class matrix2d
 		{
 			clear();
 			copyOther(other);
-//      			cout<<"matrix2d assignment operator invoked "<<endl;								
 		}
 	return (*this);
 	}
@@ -47,7 +67,6 @@ private:
 
 
 	
-
 };
 
 
@@ -55,7 +74,6 @@ private:
 	void matrix2d<T,row,column>::clear() //clear function
 	{
         free(mat2);
-//  	delete [] mat2;
 	    mat2 = NULL;
 	}
 	
@@ -72,20 +90,16 @@ private:
 	template<typename T, int row, int column> 
 	matrix2d<T,row,column>::matrix2d() //CONSTRUCTOR
 	{
-//        cout << "matrix2d Constructor invoked: " << endl;
 		mat2 = new T[row*column];
 		for(int i=0;i<row*column;i++)
 		{mat2[i]= 0;}
 	}
 
 	template<typename T, int row, int column> 
-	matrix2d<T,row,column>::~matrix2d()//DESTRUCTOR
+	matrix2d<T,row,column>::~matrix2d() //DESTRUCTOR
 	{
 //		clean up allocated memory
 		clear();
-//		delete [] mat2;
-//		mat2 = NULL;
-//	cout << "matrix2d Destructor invoked: " << endl;
 	}
 
 
@@ -97,7 +111,6 @@ private:
 		{	
 			for(j=0;j<column;j++)
 			{
-			//std::cout<<'\t';
 			os<<mymatrix2d(i,j);
 			std::cout<<'\t';
 			}
